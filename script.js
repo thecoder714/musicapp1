@@ -34,10 +34,32 @@ function draw() {
 	stroke("#FF0000");
 
     songStatus = music1.isPlaying()
+
+    if (scoreRightWrist > 0.2) {
+        if (rightWristY > 0 && rightWristY > 0) {
+          document.getElementById("speed").innerHTML = "Speed = 0.5x";
+          song.rate(0.5);
+        } else if (rightWristY > 100 && rightWristY < 200) {
+          document.getElementById("speed").innerHTML = "Speed = 1x";
+          song.rate(1);
+        } else if (rightWristY > 200 && rightWristY < 300) {
+          document.getElementById("speed").innerHTML = "Speed = 1.5x";
+          song.rate(1.5);
+        } else if (rightWristY > 300 && rightWristY < 400) {
+          document.getElementById("speed").innerHTML = "Speed = 2x";
+          song.rate(2);
+        } else if (rightWristY > 300 && rightWristY < 400) {
+          document.getElementById("speed").innerHTML = "Speed = 2.5x";
+          song.rate(2.5);
+        }
+      }
     
     if (scoreLeftWrist > 0.2) {
         music2.stop();
         circle(rightWristX,rightWristY,20);
+        volume = floor(Number(leftWristY * 2) / 1000); 
+        document.getElementById("volume").innerHTML = "Volume = " + volume;
+        song.setVolume(volume);
     }
 
     if (songStatus = false) {
@@ -47,13 +69,19 @@ function draw() {
 
 function gotPoses(results) {
     if (results > 0) {
+        // Getting Let Wrist postions
         leftWristX = pose.leftWrist.x;
         leftWristY = pose.leftWrist.y;
+        // Getting Right Wrist postions
         rightWristX = pose.rightWrist.x;
         rightWristY = pose.rightWrist.y;
-    }
+        // Consoling the output
+        console.log("scoreRightWrist = " + scoreRightWrist + " scoreLeftWrist = " + scoreLeftWrist);
+        console.log("rightWristX = " + rightWristX + " rightWristY = " + rightWristY);
+        console.log("leftWristX = " + leftWristX + " leftWristY = " + leftWristY);
 
-    scoreRight =  results[0].pose.keypoints[10].score;
-	scoreLeft =  results[0].pose.keypoints[9].score;
+        scoreRight =  results[0].pose.keypoints[10].score;
+	    scoreLeft =  results[0].pose.keypoints[9].score;
+    }
 
 }
